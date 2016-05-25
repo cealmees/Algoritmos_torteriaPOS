@@ -1,0 +1,129 @@
+﻿[
+  
+  {
+    "Producto": "Jamon",
+    "Cantidad": 50000,
+    "Precio": 100,
+    "Categoria": "Salchichoneria"
+  },
+  {
+    "Producto": "Salchichas",
+    "Cantidad": 90000,
+    "Precio": 50,
+    "Categoria": "Salchichoneria"
+  },
+  {
+    "Producto": "Chorizo",
+    "Cantidad": 30000,
+    "Precio": 90,
+    "Categoria": "Salchichoneria"
+  },
+  {
+    "Producto": "Salami",
+    "Cantidad": 10000,
+    "Precio": 150,
+    "Categoria": "Salchichoneria"
+  },
+
+  {
+    "Producto": "Quesillo",
+    "Cantidad": 50000,
+    "Precio": 120,
+    "Categoria": "Cremeria"
+  },
+  {
+    "Producto": "Queso Fresco",
+    "Cantidad": 5000,
+    "Precio": 100,
+    "Categoria": "Cremeria"
+  },
+  {
+
+    "Producto": "Queso Manchego",
+    "Cantidad": 10000,
+    "Precio": 130,
+    "Categoria": "Cremeria"
+  },
+  {
+    "Producto": "Queso Panela",
+    "Cantidad": 50000,
+    "Precio": 120,
+    "Categoria": "Cremeria"
+  },
+  {
+
+    "Producto": "Longaniza",
+    "Cantidad": 34000,
+    "Precio": 90,
+    "Categoria": "Carniceria"
+  },
+  {
+
+    "Producto": "Milanesa Pollo",
+    "Cantidad": 68000,
+    "Precio": 70,
+    "Categoria": "Carniceria"
+  },
+  {
+    "Producto": "Milanesa Cerdo",
+    "Cantidad": 20000,
+    "Precio": 80,
+    "Categoria": "Carniceria"
+  },
+  {
+
+    "Producto": "Milanesa Res",
+    "Cantidad": 30000,
+    "Precio": 130,
+    "Categoria": "Carniceria"
+  },
+  {
+    "Producto": "Frijoles",
+    "Cantidad": 50000,
+    "Precio": 15,
+    "Categoria": "Abarrotes"
+  },
+  {
+    "Producto": "Rajas",
+    "Cantidad": 20000,
+    "Precio": 80,
+    "Categoria": "Abarrotes"
+  },
+  {
+    "Producto": "Chipotles",
+    "Cantidad": 10000,
+    "Precio": 120,
+    "Categoria": "Abarrotes"
+  },
+  {
+    "Producto": "Mayonesa",
+    "Cantidad": 50000,
+    "Precio": 50,
+    "Categoria": "Abarrotes"
+  },
+  {
+    "Producto": "Lechuga",
+    "Cantidad": 18000,
+    "Precio": 15,
+    "Categoria": "Verduras"
+  },
+  {
+    "Producto": "Jitomate",
+    "Cantidad": 18000,
+    "Precio": 15,
+    "Categoria": "Verduras"
+  },
+  {
+    "Producto": "Cebolla",
+    "Cantidad": 25000,
+    "Precio": 20,
+    "Categoria": "Verduras"
+  },
+  {
+    "Producto": "Aguacate",
+    "Cantidad": 18000,
+    "Precio": 35,
+    "Categoria": "Verduras"
+  }
+
+]
