@@ -33,7 +33,37 @@
                 />
 
         </Grid>
-        
+
+        <SplitView x:Name="MySplitView"  Visibility="Collapsed" DisplayMode="CompactOverlay"  IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="150" >
+            <SplitView.Pane>
+                <StackPanel Background="Black">
+                    <Button x:Name="btnHamburguesa" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
+                     Width="50" Height="50" Background="Black" Foreground="White" Click="btnHamburguesa_Click"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="MenuButton1"  FontFamily="Segoe MDL2 Assets" Content="&#xE825;"
+                     Width="50" Height="50" Background="Black" Foreground="White"/>
+                        <TextBlock Text="Button 1" FontSize="18" Foreground="White" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="MenuButton2" FontFamily="Segoe MDL2 Assets" Foreground="White" Content="&#xE10F;"
+                         Width="50" Height="50" Background="Black"/>
+                        <TextBlock Foreground="White" Text="Button 2" FontSize="18" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="MenuButton3" Foreground="White" FontFamily="Segoe MDL2 Assets" Content="&#xE1D6;"
+                         Width="50" Height="50" Background="Black"/>
+                        <TextBlock  Text="Button 3" FontSize="18" Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid>
+                    <TextBlock Text="SplitView Basic" FontSize="54" Foreground="White"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+
 
 
         <Grid 
@@ -90,19 +120,27 @@
                 <ColumnDefinition Width = "Auto" />
                 <ColumnDefinition Width = "Auto" />
                 <ColumnDefinition Width = "Auto" />
+                <ColumnDefinition Width = "50" />
+
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-
+                
             <TextBlock Grid.Column="0" Grid.Row="0" Text="Cremeria" FontSize="24"/>
             <TextBlock Grid.Column="1" Grid.Row="0" Text="Salchichoneria" FontSize="24"/>
             <TextBlock Grid.Column="2" Grid.Row="0" Text="Carniceria" FontSize="24"/>
             <TextBlock Grid.Column="3" Grid.Row="0" Text="Abarrotes" FontSize="24"/>
             <TextBlock Grid.Column="4" Grid.Row="0" Text="Verduras" FontSize="24"/>
+            
+            <TextBlock Grid.Column="5" Grid.Row="0" x:Name="prueba"  />
 
-            <ListView x:Name="lvCremeria" Grid.Column="0" Grid.Row="1"/>
+            
+            
+            <Button Grid.Column="5" Grid.Row="1" x:Name="nene" Click="nene_Click"/>
+
+            <ListView x:Name="lvCremeria" Grid.Column="0" Grid.Row="1" Tapped="lvCremeria_Tapped" />
             <ListView x:Name="lvSalchichoneria" Grid.Column="1" Grid.Row="1"/>
             <ListView x:Name="lvCarniceria" Grid.Column="2" Grid.Row="1"/>
             <ListView x:Name="lvAbarrotes" Grid.Column="3" Grid.Row="1"/>

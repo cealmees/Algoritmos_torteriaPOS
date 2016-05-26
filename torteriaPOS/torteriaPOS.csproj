@@ -91,6 +91,7 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="DB\login.Json" />
     <Content Include="DB\Ingredientes.json" />
@@ -100,6 +101,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DB\ActualizarJson.cs" />
     <Compile Include="DB\CargarProductosJson.cs" />
     <Compile Include="DB\logIn.cs" />
     <Compile Include="MainPage.xaml.cs">

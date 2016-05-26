@@ -10,7 +10,7 @@ using Windows.Data.Json;
 
 namespace torteriaPOS
 {
-    class CargarProductosJson
+    public class CargarProductosJson
     {
         public List<MostrarIngredientes> cremeria = new List<MostrarIngredientes>();
         public List<MostrarIngredientes> salchichoneria = new List<MostrarIngredientes>();
@@ -28,6 +28,7 @@ namespace torteriaPOS
             {
                 string fileName = "ms-appx:///DB/Ingredientes.json";
                 Uri appUri = new Uri(fileName);//File name should be prefixed with 'ms-appx:///Assets/*
+
                 StorageFile anjFile = StorageFile.GetFileFromApplicationUriAsync(appUri).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
                 string jsonText = FileIO.ReadTextAsync(anjFile).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
                 var jsonSerializer = new DataContractJsonSerializer(typeof(MostrarIngredientes));
@@ -50,6 +51,7 @@ namespace torteriaPOS
                             verduras.Add(oContent);
                     }
                 }
+               
             }
             catch (Exception exp)
             {

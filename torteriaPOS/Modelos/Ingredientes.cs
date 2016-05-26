@@ -6,17 +6,13 @@ using System.Threading.Tasks;
 
 namespace torteriaPOS
 {
-    public class Ingredientes
+    public class Ingredientes 
     {
         public string Producto { get; set; }
         public float Cantidad { get; set; }
         public float Precio { get; set; }
         public string Categoria { get; set; }
 
-        public override string ToString()
-        {
-            return "Producto: " + this.Producto + "\nCantidad: " + this.Cantidad + " gr \nPrecio: $" + this.Precio + "\nCategoría: " + this.Categoria;
-        }
 
     }
 
@@ -24,7 +20,7 @@ namespace torteriaPOS
     {
         public override string ToString()
         {
-            return this.Producto + "\n" + this.Cantidad + "Kg \n$" + this.Precio + "\n" + this.Categoria;
+            return this.Producto + "\n" + (this.Cantidad/1000) + " Kg \n$" + this.Precio;
         }
     }
 }

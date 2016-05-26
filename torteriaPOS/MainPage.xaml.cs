@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Collections.ObjectModel;
-
+using Windows.Storage;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Newtonsoft.Json;
+using Windows.Storage.Streams;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -54,6 +56,8 @@ namespace torteriaPOS
                 mostrarIngredientes();
 
                 vistaIngredientes.Visibility = Visibility.Visible;
+
+                MySplitView.Visibility = Visibility.Visible;
             }
                            
             else
@@ -65,16 +69,66 @@ namespace torteriaPOS
         {
             logInfrm.Visibility = Visibility.Collapsed;
         }
+
+        CargarProductosJson listas = new CargarProductosJson();
+
         private void mostrarIngredientes()
         {
-            CargarProductosJson listas = new CargarProductosJson();
+
+            
             lvAbarrotes.ItemsSource = listas.abarrotes;
             lvCarniceria.ItemsSource = listas.carniceria;
             lvCremeria.ItemsSource = listas.cremeria;
             lvSalchichoneria.ItemsSource = listas.salchichoneria;
             lvVerduras.ItemsSource = listas.verduras;
+
+
         }
 
 
+
+
+        public int aux;
+        public void lvCremeria_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            int auxTest = lvCremeria.SelectedIndex;
+            aux = auxTest;
+            //prueba.Text = aux.ToString();
+        }
+
+        private  void nene_Click(object sender, RoutedEventArgs e)
+        {
+            listas.cremeria[aux].Cantidad -= 100;
+
+            //try
+            //{
+            //    //prueba.Text = listas.cremeria[aux].Cantidad.ToString();
+
+            //    string pruebaAuxSer = JsonConvert.SerializeObject(listas.cremeria.ToArray());
+            //    string fileName = "ms-appx:///DB/Ingredientes.json";
+            //    Uri appUri = new Uri(fileName);
+            //    StorageFile file = StorageFile.GetFileFromApplicationUriAsync(appUri).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            //    using (IRandomAccessStream textStream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            //    {
+            //        // write the JSON string!
+            //        using (DataWriter textWriter = new DataWriter(textStream))
+            //        {
+            //            textWriter.WriteString(pruebaAuxSer);
+            //            await textWriter.StoreAsync();
+            //        }
+            //    }
+            //}
+            //catch (FileNotFoundException) { }
+
+            lvCremeria.ItemsSource = null;
+            lvCremeria.ItemsSource = listas.cremeria;
+
+        }
+
+        private void btnHamburguesa_Click(object sender, RoutedEventArgs e)
+        {
+            MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
+        }
     }
 }
