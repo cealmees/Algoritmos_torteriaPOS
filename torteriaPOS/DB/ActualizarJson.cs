@@ -31,25 +31,32 @@ namespace torteriaPOS
 
         public async Task escribirJson()
         {
-            crearJson();
-            List<MostrarIngredientes> prueba = new List<MostrarIngredientes>();
-
-            prueba.AddRange(nuevo.abarrotes);
-            prueba.AddRange(nuevo.carniceria);
-            prueba.AddRange(nuevo.cremeria);
-            prueba.AddRange(nuevo.salchichoneria);
-
-            string json = JsonConvert.SerializeObject(prueba.ToArray(), Formatting.Indented);
-
-            byte[] fileBytes = System.Text.Encoding.UTF8.GetBytes(json.ToCharArray());
-
-            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("ingredientesTorta.json");
-
-            using (var s = await sampleFile.OpenStreamForWriteAsync())
+            try
             {
-                s.Write(fileBytes, 0, fileBytes.Length);
+                crearJson();
+                List<MostrarIngredientes> prueba = new List<MostrarIngredientes>();
+
+                prueba.AddRange(nuevo.abarrotes);
+                prueba.AddRange(nuevo.carniceria);
+                prueba.AddRange(nuevo.cremeria);
+                prueba.AddRange(nuevo.salchichoneria);
+                prueba.AddRange(nuevo.verduras);
+
+                string json = JsonConvert.SerializeObject(prueba.ToArray(), Formatting.Indented);
+
+                byte[] fileBytes = System.Text.Encoding.UTF8.GetBytes(json.ToCharArray());
+
+                Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("ingredientesTorta.json");
+
+                using (var s = await sampleFile.OpenStreamForWriteAsync())
+                {
+                    s.Write(fileBytes, 0, fileBytes.Length);
+                }
             }
+            catch (FileLoadException) { }
+            catch (FieldAccessException) { }
+            
         }
     }
 }

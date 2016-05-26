@@ -26,12 +26,10 @@ namespace torteriaPOS
         {
             try
             {
-                //string fileName = "ms-appx:///DB/Ingredientes.json";
-                //Uri appUri = new Uri(fileName);//File name should be prefixed with 'ms-appx:///Assets/*
+
                 Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
                 Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("ingredientesTorta.json");
 
-                //StorageFile anjFile = StorageFile.GetFileFromApplicationUriAsync(appUri).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
                 string jsonText = FileIO.ReadTextAsync(sampleFile).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
                 var jsonSerializer = new DataContractJsonSerializer(typeof(MostrarIngredientes));
                 JsonArray anjarray = JsonArray.Parse(jsonText);
@@ -55,7 +53,7 @@ namespace torteriaPOS
                 }
                
             }
-            catch (Exception exp)
+            catch (Exception)
             {
             }
         }

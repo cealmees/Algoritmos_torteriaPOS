@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using Windows.Data.Json;
 using Windows.Storage;
 using System.Runtime.Serialization.Json;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Xaml;
 
 namespace torteriaPOS
 {
@@ -20,7 +22,6 @@ namespace torteriaPOS
         private string json;
         private string userName;
         private string userPassword;
-
         public string usuarioActivo;
 
         //Constructor de clase
@@ -83,11 +84,13 @@ namespace torteriaPOS
                 }
 
             }
-            catch (Exception exp) { }
+            catch (Exception) { }
 
             return verificar;
 
         }
+
+
 
     }
 }

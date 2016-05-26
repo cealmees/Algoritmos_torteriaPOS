@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json;
 using Windows.Storage.Streams;
+using System.Threading.Tasks;
+using System.Collections;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -50,13 +52,13 @@ namespace torteriaPOS
             if (aux == true)
             {
                 logInfrm.Visibility = Visibility.Collapsed;
-                bienvenidaUsuario.Text = "¡Bienvenido "+ accesoUsuario.usuarioActivo+"!";
-                bienvenidaUsuario.Visibility = Visibility.Visible;
-                mostrarIngredientes();
 
-                vistaIngredientes.Visibility = Visibility.Visible;
+                
 
                 MySplitView.Visibility = Visibility.Visible;
+
+                logInbtn.Visibility = Visibility.Collapsed;
+                logOutbtn.Visibility = Visibility.Visible;
             }
                            
             else
@@ -71,6 +73,7 @@ namespace torteriaPOS
 
         CargarProductosJson listas = new CargarProductosJson();
 
+        List<MostrarIngredientes> torta = new List<MostrarIngredientes>();
         private void mostrarIngredientes()
         {
 
@@ -81,47 +84,31 @@ namespace torteriaPOS
             lvSalchichoneria.ItemsSource = listas.salchichoneria;
             lvVerduras.ItemsSource = listas.verduras;
 
+            
 
+
+            lvTorta.ItemsSource = torta;
         }
 
+        
+       
 
 
+        public int auxCremeria;
+        public int auxCarniceria;
+        public int auxAbarrote;
+        public int auxVerduras;
+        public int auxSalchichoneria;
+        public int auxTorta;
 
-        public int aux;
         public void lvCremeria_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            int auxTest = lvCremeria.SelectedIndex;
-            aux = auxTest;
-            //prueba.Text = aux.ToString();
+            auxCremeria = lvCremeria.SelectedIndex;
         }
 
-        private async void nene_Click(object sender, RoutedEventArgs e)
+        private void nene_Click(object sender, RoutedEventArgs e)
         {
-            listas.cremeria[aux].Cantidad -= 100;
-
-            //try
-            //{
-            //    //prueba.Text = listas.cremeria[aux].Cantidad.ToString();
-
-            //    string pruebaAuxSer = JsonConvert.SerializeObject(listas.cremeria.ToArray());
-            //    string fileName = "ms-appx:///DB/Ingredientes.json";
-            //    Uri appUri = new Uri(fileName);
-            //    StorageFile file = StorageFile.GetFileFromApplicationUriAsync(appUri).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            //    using (IRandomAccessStream textStream = await file.OpenAsync(FileAccessMode.ReadWrite))
-            //    {
-            //        // write the JSON string!
-            //        using (DataWriter textWriter = new DataWriter(textStream))
-            //        {
-            //            textWriter.WriteString(pruebaAuxSer);
-            //            await textWriter.StoreAsync();
-            //        }
-            //    }
-            //}
-            //catch (FileNotFoundException) { }
-
-            ActualizarJson prueba = new ActualizarJson(listas);
-            await prueba.escribirJson();
+            listas.cremeria[auxCremeria].Cantidad -= 100;
             lvCremeria.ItemsSource = null;
             lvCremeria.ItemsSource = listas.cremeria;
 
@@ -129,7 +116,125 @@ namespace torteriaPOS
 
         private void btnHamburguesa_Click(object sender, RoutedEventArgs e)
         {
-            MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
+            //MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
+
+        private async void logOutbtn_Click(object sender, RoutedEventArgs e)
+        {
+            await guardarDatos();
+            Application.Current.Exit();
+        }
+
+        public async Task guardarDatos()
+        {
+            ActualizarJson prueba = new ActualizarJson(listas);
+            await prueba.escribirJson();
+        }
+
+        
+        private void Inventario_Click(object sender, RoutedEventArgs e)
+        {
+            bienvenidaUsuario.Text = "Inventario";
+            bienvenidaUsuario.Visibility = Visibility.Visible;
+            mostrarIngredientes();
+            vistaIngredientes.Visibility = Visibility.Visible;
+        }
+
+        private void GetTortas_Click(object sender, RoutedEventArgs e)
+        {
+           //torta
+
+            
+
+            tortaDeMilanesaPollo();
+            refrescarLv();
+        }
+
+        private void refrescarLv()
+        {
+            lvCremeria.ItemsSource = null;
+            lvAbarrotes.ItemsSource = null;
+            lvCarniceria.ItemsSource = null;
+            lvVerduras.ItemsSource = null;
+            lvSalchichoneria.ItemsSource = null;
+            lvTorta.ItemsSource = null;
+
+            lvCremeria.ItemsSource = listas.cremeria;
+            lvAbarrotes.ItemsSource = listas.abarrotes;
+            lvCarniceria.ItemsSource = listas.carniceria;
+            lvVerduras.ItemsSource = listas.verduras;
+            lvSalchichoneria.ItemsSource = listas.salchichoneria;
+            lvTorta.ItemsSource = torta;
+        }
+        private void tortaDeMilanesaPollo()
+        {
+            //Digamos que esta torta de milanesa lleva:
+            //milanesa Pollo = 100 gr
+            //Jamon = 50 gr
+            //quesillo = 70 gr
+            //aguacate = 20 gr
+            //mayonesa = 20 gr
+
+            float[] tortaCantidad = new float[5] { 100, 50, 70, 20, 20 };
+
+            listas.abarrotes[auxAbarrote].Cantidad -= tortaCantidad[4];
+            listas.cremeria[auxCremeria].Cantidad -= tortaCantidad[2];
+            listas.verduras[auxVerduras].Cantidad -= tortaCantidad[3];
+            listas.salchichoneria[auxSalchichoneria].Cantidad -= tortaCantidad[1];
+            listas.carniceria[auxCarniceria].Cantidad -= tortaCantidad[0];
+
+            ArrayList contador = new ArrayList();
+
+            
+
+            foreach (MostrarIngredientes item01 in lvCremeria.SelectedItems)
+            {
+                torta.Add(item01);
+            }
+            foreach (MostrarIngredientes item01 in lvAbarrotes.SelectedItems)
+            {
+                torta.Add(item01);
+            }
+            foreach (MostrarIngredientes item01 in lvCarniceria.SelectedItems)
+            {
+                torta.Add(item01);
+            }
+            foreach (MostrarIngredientes item01 in lvVerduras.SelectedItems)
+            {
+                torta.Add(item01);
+            }
+            foreach (MostrarIngredientes item01 in lvSalchichoneria.SelectedItems)
+            {
+                torta.Add(item01);
+            }
+
+        }
+
+        private void lvSalchichoneria_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            auxSalchichoneria = lvSalchichoneria.SelectedIndex;
+        }
+
+        private void lvCarniceria_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            auxCarniceria = lvCarniceria.SelectedIndex;
+        }
+
+        private void lvAbarrotes_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            auxAbarrote = lvAbarrotes.SelectedIndex;
+        }
+
+        private void lvVerduras_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            auxVerduras = lvVerduras.SelectedIndex;
+        }
+
+        private void lvTorta_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            auxTorta = lvTorta.SelectedIndex;
+        }
+
+
     }
 }

@@ -8,22 +8,31 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="*" />
 
+        </Grid.ColumnDefinitions>
 
-
-        <Grid 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
             
-            x:Name="barraInicio" 
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="barraInicio" 
             Background="Black" 
             VerticalAlignment="Top" 
             Height="Auto" 
+            Grid.ColumnSpan="3"
+            Grid.Row="0"
             >
 
-            <TextBlock x:Name="bienvenidaUsuario" Foreground="White" FontSize="30" Visibility="Collapsed" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock x:Name="bienvenidaUsuario" Foreground="White" FontSize="18" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <AppBarButton 
                 
                 x:Name="logInbtn"
-                Icon="People" 
+                Icon="Contact" 
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Center"       
                 BorderBrush="White"
@@ -31,18 +40,30 @@
                 Foreground="White"
                 Click="logInbtn_Click"
                 />
+            <AppBarButton 
+                
+                x:Name="logOutbtn"
+                Icon="Setting" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Center"       
+                BorderBrush="White"
+                Visibility="Collapsed"
+                Click="logOutbtn_Click"
+                Foreground="White"
+                />
 
         </Grid>
 
-        <SplitView x:Name="MySplitView"  Visibility="Collapsed" DisplayMode="CompactOverlay"  IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="150" >
+        <SplitView x:Name="MySplitView"  Visibility="Collapsed" DisplayMode="CompactOverlay"  IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="150" 
+                   Grid.Column="0" Grid.RowSpan="3" >
             <SplitView.Pane>
                 <StackPanel Background="Black">
                     <Button x:Name="btnHamburguesa" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
                      Width="50" Height="50" Background="Black" Foreground="White" Click="btnHamburguesa_Click"/>
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="MenuButton1"  FontFamily="Segoe MDL2 Assets" Content="&#xE825;"
-                     Width="50" Height="50" Background="Black" Foreground="White"/>
-                        <TextBlock Text="Button 1" FontSize="18" Foreground="White" VerticalAlignment="Center" />
+                        <Button x:Name="Inventario"  FontFamily="Segoe MDL2 Assets" Content="&#xE825;"
+                     Width="50" Height="50" Background="Black" Foreground="White" Click="Inventario_Click"/>
+                        <TextBlock Text="Inventario" FontSize="18" Foreground="White" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="MenuButton2" FontFamily="Segoe MDL2 Assets" Foreground="White" Content="&#xE10F;"
@@ -64,11 +85,9 @@
             </SplitView.Content>
         </SplitView>
 
-
-
-        <Grid 
+        <Grid x:Name="ContenedorGrid" Grid.Column="1" Grid.Row="1">
             
-            x:Name="logInfrm"
+            <Grid x:Name="logInfrm"
             Visibility="Collapsed"
             Background="Black"
             VerticalAlignment="Center"
@@ -77,74 +96,82 @@
             >
 
 
-            <Grid x:Name="datosFrm" VerticalAlignment="Center" HorizontalAlignment="Left" BorderBrush="Gray" BorderThickness="10">
+                <Grid x:Name="datosFrm" VerticalAlignment="Center" HorizontalAlignment="Left" BorderBrush="Gray" BorderThickness="10">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
 
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
 
-                </Grid.RowDefinitions>
+                    </Grid.RowDefinitions>
 
-                <TextBlock Text="Control de Usuarios" Grid.Row="0" Grid.Column="0" Foreground="White" FontFamily="Arial" FontSize="20" />
+                    <TextBlock Text="Control de Usuarios" Grid.Row="0" Grid.Column="0" Foreground="White" FontFamily="Arial" FontSize="20" />
 
-                <TextBlock Text="Usuario" Foreground="White" Grid.Row="1" Grid.Column="0" FontFamily="Arial" FontSize="20" HorizontalAlignment="Left" />
-                <TextBox x:Name="userFrm" Background="White" Grid.Row="1" Grid.Column="1"  Width="100" HorizontalAlignment="Center"/>
-                <TextBlock Text="Contraseña" Foreground="White" Grid.Row="2" Grid.Column="0" FontFamily="Arial" FontSize="20" HorizontalAlignment="Left" />
-                <PasswordBox x:Name="passwordFrm" Background="White" Grid.Row="2" Grid.Column="1"  Width="100" HorizontalAlignment="Center"/>
-                <Button x:Name="enviarFrm"  Grid.Row="3" Grid.Column="2" Click="enviarFrm_Click" Content="Enviar" FontFamily="Arial" FontSize="17" Foreground="White" BorderBrush="White" />
-                <Button x:Name="cancerlarFrm"  Grid.Row="3" Grid.Column="0" Click="cancerlarFrm_Click" Content="Cancelar" FontFamily="Arial" FontSize="17" Foreground="White" BorderBrush="White"  />
-                <TextBlock x:Name="resultado" Visibility="Collapsed"  FontSize="20" Text="Usuario o contraseña incorrecta." Foreground="White" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="4"/>
+                    <TextBlock Text="Usuario" Foreground="White" Grid.Row="1" Grid.Column="0" FontFamily="Arial" FontSize="20" HorizontalAlignment="Left" />
+                    <TextBox x:Name="userFrm" Background="White" Grid.Row="1" Grid.Column="1"  Width="100" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Contraseña" Foreground="White" Grid.Row="2" Grid.Column="0" FontFamily="Arial" FontSize="20" HorizontalAlignment="Left" />
+                    <PasswordBox x:Name="passwordFrm" Background="White" Grid.Row="2" Grid.Column="1"  Width="100" HorizontalAlignment="Center"/>
+                    <Button x:Name="enviarFrm"  Grid.Row="3" Grid.Column="2" Click="enviarFrm_Click" Content="Enviar" FontFamily="Arial" FontSize="17" Foreground="White" BorderBrush="White" />
+                    <Button x:Name="cancerlarFrm"  Grid.Row="3" Grid.Column="0" Click="cancerlarFrm_Click" Content="Cancelar" FontFamily="Arial" FontSize="17" Foreground="White" BorderBrush="White"  />
+                    <TextBlock x:Name="resultado" Visibility="Collapsed"  FontSize="20" Text="Usuario o contraseña incorrecta." Foreground="White" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="4"/>
+
+
+                </Grid>
 
 
             </Grid>
 
+            <Grid x:Name="vistaIngredientes" Visibility="Collapsed" VerticalAlignment="Top" HorizontalAlignment="Center" >
+                <ScrollViewer>
+                    <StackPanel>
+                        <Grid>
 
-        </Grid>
-        
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width = "Auto" />
+                                <ColumnDefinition Width = "Auto" />
+                                <ColumnDefinition Width = "Auto" />
+                                <ColumnDefinition Width = "Auto" />
+                                <ColumnDefinition Width = "Auto" />
+                                <ColumnDefinition Width = "50" />
 
-        <Grid x:Name="vistaIngredientes" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width = "Auto" />
-                <ColumnDefinition Width = "Auto" />
-                <ColumnDefinition Width = "Auto" />
-                <ColumnDefinition Width = "Auto" />
-                <ColumnDefinition Width = "Auto" />
-                <ColumnDefinition Width = "50" />
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Cremeria" FontSize="24"/>
+                            <TextBlock Grid.Column="1" Grid.Row="0" Text="Salchichoneria" FontSize="24"/>
+                            <TextBlock Grid.Column="2" Grid.Row="0" Text="Carniceria" FontSize="24"/>
+                            <TextBlock Grid.Column="3" Grid.Row="0" Text="Abarrotes" FontSize="24"/>
+                            <TextBlock Grid.Column="4" Grid.Row="0" Text="Verduras" FontSize="24"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="" x:Name="auxContador"/>
+                            <Button x:Name="GetTortas" Click="GetTortas_Click" Grid.Column="0" Grid.Row="2" />
 
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+                            <ListView x:Name="lvCremeria" Grid.Column="0" Grid.Row="1" Tapped="lvCremeria_Tapped"   />
+                            <ListView x:Name="lvSalchichoneria" Grid.Column="1" Grid.Row="1" Tapped="lvSalchichoneria_Tapped" />
+                            <ListView x:Name="lvCarniceria" Grid.Column="2" Grid.Row="1" Tapped="lvCarniceria_Tapped" />
+                            <ListView x:Name="lvAbarrotes" Grid.Column="3" Grid.Row="1" Tapped="lvAbarrotes_Tapped"  />
+                            <ListView x:Name="lvVerduras" Grid.Column="4" Grid.Row="1" Tapped="lvVerduras_Tapped" />
+                            <ListView x:Name="lvTorta" Grid.Column="5" Grid.Row="1" Tapped="lvTorta_Tapped"/>
+
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
                 
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="Cremeria" FontSize="24"/>
-            <TextBlock Grid.Column="1" Grid.Row="0" Text="Salchichoneria" FontSize="24"/>
-            <TextBlock Grid.Column="2" Grid.Row="0" Text="Carniceria" FontSize="24"/>
-            <TextBlock Grid.Column="3" Grid.Row="0" Text="Abarrotes" FontSize="24"/>
-            <TextBlock Grid.Column="4" Grid.Row="0" Text="Verduras" FontSize="24"/>
-            
-            <TextBlock Grid.Column="5" Grid.Row="0" x:Name="prueba"  />
-
-            
-            
-            <Button Grid.Column="5" Grid.Row="1" x:Name="nene" Click="nene_Click"/>
-
-            <ListView x:Name="lvCremeria" Grid.Column="0" Grid.Row="1" Tapped="lvCremeria_Tapped" />
-            <ListView x:Name="lvSalchichoneria" Grid.Column="1" Grid.Row="1"/>
-            <ListView x:Name="lvCarniceria" Grid.Column="2" Grid.Row="1"/>
-            <ListView x:Name="lvAbarrotes" Grid.Column="3" Grid.Row="1"/>
-            <ListView x:Name="lvVerduras" Grid.Column="4" Grid.Row="1"/>
         </Grid>
         
     </Grid>
