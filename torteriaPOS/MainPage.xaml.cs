@@ -27,7 +27,6 @@ namespace torteriaPOS
     public sealed partial class MainPage : Page
     {
         public string rutaJsonLogIn = "ms-appx:///DB/login.Json";
-        public string rutaJsonProductos = "ms-appx:///DB/Productos.json";
         public MainPage()
         {
             this.InitializeComponent();
@@ -96,7 +95,7 @@ namespace torteriaPOS
             //prueba.Text = aux.ToString();
         }
 
-        private  void nene_Click(object sender, RoutedEventArgs e)
+        private async void nene_Click(object sender, RoutedEventArgs e)
         {
             listas.cremeria[aux].Cantidad -= 100;
 
@@ -121,6 +120,8 @@ namespace torteriaPOS
             //}
             //catch (FileNotFoundException) { }
 
+            ActualizarJson prueba = new ActualizarJson(listas);
+            await prueba.escribirJson();
             lvCremeria.ItemsSource = null;
             lvCremeria.ItemsSource = listas.cremeria;
 

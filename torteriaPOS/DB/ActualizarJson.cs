@@ -20,27 +20,33 @@ namespace torteriaPOS
             nuevo = aux;
         }
 
-
-        public async Task WriteToFile()
+        public async void crearJson()
         {
-            string json = JsonConvert.SerializeObject(nuevo.cremeria.ToArray());
+            Windows.Storage.StorageFolder fileFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile archivoPrueba = await fileFolder.CreateFileAsync("ingredientesTorta.json", Windows.Storage.CreationCollisionOption.ReplaceExisting);
 
-            // Get the text data from the textbox. 
+        }
+
+
+
+        public async Task escribirJson()
+        {
+            crearJson();
+            List<MostrarIngredientes> prueba = new List<MostrarIngredientes>();
+
+            prueba.AddRange(nuevo.abarrotes);
+            prueba.AddRange(nuevo.carniceria);
+            prueba.AddRange(nuevo.cremeria);
+            prueba.AddRange(nuevo.salchichoneria);
+
+            string json = JsonConvert.SerializeObject(prueba.ToArray(), Formatting.Indented);
+
             byte[] fileBytes = System.Text.Encoding.UTF8.GetBytes(json.ToCharArray());
 
-            // Get the local folder.
-            StorageFolder local = Windows.Storage.ApplicationData.Current.LocalFolder ;
+            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("ingredientesTorta.json");
 
-            // Create a new folder name DataFolder.
-
-            var dataFolder = await local.CreateFolderAsync("DB",
-                CreationCollisionOption.OpenIfExists);
-
-            // Create a new file named DataFile.txt.
-            var file = await dataFolder.CreateFileAsync("Ingredientes.txt", CreationCollisionOption.ReplaceExisting);
-
-            // Write the data from the textbox.
-            using (var s = await file.OpenStreamForWriteAsync())
+            using (var s = await sampleFile.OpenStreamForWriteAsync())
             {
                 s.Write(fileBytes, 0, fileBytes.Length);
             }
@@ -49,35 +55,4 @@ namespace torteriaPOS
 }
 
 
-//        public async void actJson()
-//        {
 
-//            UnicodeEncoding uniencoding = new UnicodeEncoding();
-//            //System.IO.File.WriteAllText("ms-appx:///DB/Ingredientes.json", json);
-//                byte[] resultado = uniencoding.GetBytes(json);
-
-//                using (FileStream JsonFile = File.Open(@"ms-appx:///DB/Ingredientes.json", FileMode.OpenOrCreate))
-//                {
-//                    JsonFile.Seek(0, SeekOrigin.End);
-
-//                    await JsonFile.WriteAsync(resultado, 0, resultado.Length);
-//                }
-
-
-//            //File.WriteAllText(@"ms-appx:///DB/Ingredientes.json", JsonConvert.SerializeObject(nuevo.cremeria));
-//            //try
-//            //{
-//            //    string json = JsonConvert.SerializeObject(nuevo.cremeria.ToArray());
-//            //    System.IO.File.WriteAllText(@"ms-appx:///DB/Ingredientes.json", json);
-//            //    //using (StreamWriter file = File.CreateText(@"ms-appx:///DB/Ingredientes.json"))
-//            //    //{
-//            //    //    JsonSerializer serializador = new JsonSerializer();
-//            //    //    serializador.Serialize(file, nuevo.cremeria);
-//            //    //}
-//            //}
-//            //catch (Exception exp)
-//            //{
-//            //}
-//        }
-//    }
-//}
