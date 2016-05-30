@@ -15,34 +15,33 @@ namespace torteriaPOS
     public class ActualizarJson
     {
         public CargarProductosJson nuevo = new CargarProductosJson();
+
         public ActualizarJson(CargarProductosJson aux)
         {
             nuevo = aux;
         }
 
-        public async void crearJson()
+        public async void crearJsonIngredientes()
         {
             Windows.Storage.StorageFolder fileFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             Windows.Storage.StorageFile archivoPrueba = await fileFolder.CreateFileAsync("ingredientesTorta.json", Windows.Storage.CreationCollisionOption.ReplaceExisting);
 
         }
 
+        public async void crearJsonMenu()
+        {
+            Windows.Storage.StorageFolder fileFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile archivoPrueba = await fileFolder.CreateFileAsync("menuTorta.json", Windows.Storage.CreationCollisionOption.ReplaceExisting);
 
+        }
 
-        public async Task escribirJson()
+        public async Task escribirJsonIngredientes()
         {
             try
             {
-                crearJson();
-                List<MostrarIngredientes> prueba = new List<MostrarIngredientes>();
+                crearJsonIngredientes();
 
-                prueba.AddRange(nuevo.abarrotes);
-                prueba.AddRange(nuevo.carniceria);
-                prueba.AddRange(nuevo.cremeria);
-                prueba.AddRange(nuevo.salchichoneria);
-                prueba.AddRange(nuevo.verduras);
-
-                string json = JsonConvert.SerializeObject(prueba.ToArray(), Formatting.Indented);
+                string json = JsonConvert.SerializeObject(nuevo.MenuIngredientes.ToArray(), Formatting.Indented);
 
                 byte[] fileBytes = System.Text.Encoding.UTF8.GetBytes(json.ToCharArray());
 
@@ -58,7 +57,33 @@ namespace torteriaPOS
             catch (FieldAccessException) { }
             
         }
+
+        public async Task escribirJsonMenu()
+        {
+            try
+            {
+                crearJsonMenu();
+
+                string json = JsonConvert.SerializeObject(nuevo.MenuTortas.ToArray(), Formatting.Indented);
+
+                byte[] fileBytes = System.Text.Encoding.UTF8.GetBytes(json.ToCharArray());
+
+                Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("menuTorta.json");
+
+                using (var s = await sampleFile.OpenStreamForWriteAsync())
+                {
+                    s.Write(fileBytes, 0, fileBytes.Length);
+                }
+            }
+            catch (FileLoadException) { }
+            catch (FieldAccessException) { }
+
+        }
+
+
     }
+
 }
 
 

@@ -12,43 +12,31 @@ namespace torteriaPOS
 {
     public class CargarProductosJson
     {
-        public List<MostrarIngredientes> cremeria = new List<MostrarIngredientes>();
-        public List<MostrarIngredientes> salchichoneria = new List<MostrarIngredientes>();
-        public List<MostrarIngredientes> carniceria = new List<MostrarIngredientes>();
-        public List<MostrarIngredientes> abarrotes = new List<MostrarIngredientes>();
-        public List<MostrarIngredientes> verduras = new List<MostrarIngredientes>();
-
         public CargarProductosJson()
         {
-            ReadFromDefaultFile();
+            leerMenuIngredientes();
+            leerMenuTortas();
         }
-        public async void ReadFromDefaultFile()
+        public List<IngredientesCategoria> MenuIngredientes = new List<IngredientesCategoria>();
+
+        public async void leerMenuIngredientes()
         {
             try
             {
 
-                Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-                Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("ingredientesTorta.json");
+                Windows.Storage.StorageFolder Folder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                Windows.Storage.StorageFile JSONINGREDIENTES = await Folder.GetFileAsync("ingredientesTorta.json");
 
-                string jsonText = FileIO.ReadTextAsync(sampleFile).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
-                var jsonSerializer = new DataContractJsonSerializer(typeof(MostrarIngredientes));
-                JsonArray anjarray = JsonArray.Parse(jsonText);
+                string jText = FileIO.ReadTextAsync(JSONINGREDIENTES).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+                var jsonSerializer = new DataContractJsonSerializer(typeof(IngredientesCategoria));
+                JsonArray anjarray = JsonArray.Parse(jText);
                 foreach (JsonValue oJsonVal in anjarray)
                 {
                     JsonObject oJsonObj = oJsonVal.GetObject();
                     using (MemoryStream jsonStream = new MemoryStream(Encoding.Unicode.GetBytes(oJsonObj.ToString())))
                     {
-                        MostrarIngredientes oContent = (MostrarIngredientes)jsonSerializer.ReadObject(jsonStream);
-                        if (oContent.Categoria == "Cremeria")
-                            cremeria.Add(oContent);
-                        if (oContent.Categoria == "Salchichoneria")
-                            salchichoneria.Add(oContent);
-                        if (oContent.Categoria == "Carniceria")
-                            carniceria.Add(oContent);
-                        if (oContent.Categoria == "Abarrotes")
-                            abarrotes.Add(oContent);
-                        if (oContent.Categoria == "Verduras")
-                            verduras.Add(oContent);
+                        IngredientesCategoria oContent = (IngredientesCategoria)jsonSerializer.ReadObject(jsonStream);
+                        MenuIngredientes.Add(oContent);
                     }
                 }
                
@@ -57,5 +45,40 @@ namespace torteriaPOS
             {
             }
         }
+
+        public List<TortasCreador> MenuTortas = new List<TortasCreador>();
+
+        public async void leerMenuTortas()
+        {
+            try
+            {
+
+                Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("menuTorta.json");
+
+                string jsonText = FileIO.ReadTextAsync(sampleFile).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+                var jsonSerializer = new DataContractJsonSerializer(typeof(TortasCreador));
+                JsonArray anjarray = JsonArray.Parse(jsonText);
+                foreach (JsonValue oJsonVal in anjarray)
+                {
+                    JsonObject oJsonObj = oJsonVal.GetObject();
+                    using (MemoryStream jsonStream = new MemoryStream(Encoding.Unicode.GetBytes(oJsonObj.ToString())))
+                    {
+                        TortasCreador oContent = (TortasCreador)jsonSerializer.ReadObject(jsonStream);
+                        MenuTortas.Add(oContent);
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+
+
+
+
     }
 }

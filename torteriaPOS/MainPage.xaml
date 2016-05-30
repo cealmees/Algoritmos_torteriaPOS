@@ -66,9 +66,9 @@
                         <TextBlock Text="Inventario" FontSize="18" Foreground="White" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="MenuButton2" FontFamily="Segoe MDL2 Assets" Foreground="White" Content="&#xE10F;"
-                         Width="50" Height="50" Background="Black"/>
-                        <TextBlock Foreground="White" Text="Button 2" FontSize="18" VerticalAlignment="Center" />
+                        <Button x:Name="CrearTortas" FontFamily="Segoe MDL2 Assets" Foreground="White" Content="&#xE10F;"
+                         Width="50" Height="50" Background="Black" Click="CrearTortas_Click"/>
+                        <TextBlock Foreground="White" Text="Crear Tortas" FontSize="18" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="MenuButton3" Foreground="White" FontFamily="Segoe MDL2 Assets" Content="&#xE1D6;"
@@ -158,14 +158,18 @@
                             <TextBlock Grid.Column="3" Grid.Row="0" Text="Abarrotes" FontSize="24"/>
                             <TextBlock Grid.Column="4" Grid.Row="0" Text="Verduras" FontSize="24"/>
                             <TextBlock Grid.Column="0" Grid.Row="1" Text="" x:Name="auxContador"/>
-                            <Button x:Name="GetTortas" Click="GetTortas_Click" Grid.Column="0" Grid.Row="2" />
+                            <Button x:Name="GetTortas" Grid.Column="4" Grid.Row="2" />
 
                             <ListView x:Name="lvCremeria" Grid.Column="0" Grid.Row="1" Tapped="lvCremeria_Tapped"   />
                             <ListView x:Name="lvSalchichoneria" Grid.Column="1" Grid.Row="1" Tapped="lvSalchichoneria_Tapped" />
                             <ListView x:Name="lvCarniceria" Grid.Column="2" Grid.Row="1" Tapped="lvCarniceria_Tapped" />
                             <ListView x:Name="lvAbarrotes" Grid.Column="3" Grid.Row="1" Tapped="lvAbarrotes_Tapped"  />
                             <ListView x:Name="lvVerduras" Grid.Column="4" Grid.Row="1" Tapped="lvVerduras_Tapped" />
-                            <ListView x:Name="lvTorta" Grid.Column="5" Grid.Row="1" Tapped="lvTorta_Tapped"/>
+                            <ListView x:Name="lvTorta" Grid.Column="3" Grid.Row="2" Tapped="lvTorta_Tapped"/>
+
+                            <TextBlock x:Name="Banner" Text="Nombre de la torta: " Grid.Column="0" Grid.Row="2" Visibility="Collapsed" />
+                            <TextBox x:Name="NombreTorta" Width="Auto" Grid.Column="1" Grid.Row="2" Visibility="Collapsed"/>
+                            <Button x:Name="CrearTorta" Content="Crear!" Grid.Column="1" Grid.Row="3" Visibility="Collapsed" Click="CrearTorta_Click" />
 
                         </Grid>
                     </StackPanel>
