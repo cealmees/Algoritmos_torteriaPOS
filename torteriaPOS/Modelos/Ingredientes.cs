@@ -23,14 +23,6 @@ namespace torteriaPOS
 
 
 
-    //public class MostrarIngredientes : Productos
-    //{
-    //    public override string ToString()
-    //    {
-    //        return this.Producto + "\n" + (this.Cantidad/1000) + " Kg \n$" + this.Precio;
-    //    }
-    //}
-
     public class IngredientesCategoria
     {
         public string Categoria { get; set; }

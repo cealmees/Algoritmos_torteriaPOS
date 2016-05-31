@@ -61,6 +61,11 @@
                     <Button x:Name="btnHamburguesa" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
                      Width="50" Height="50" Background="Black" Foreground="White" Click="btnHamburguesa_Click"/>
                     <StackPanel Orientation="Horizontal">
+                        <Button x:Name="Home" Foreground="White" FontFamily="Segoe MDL2 Assets" Content= "&#xE10F;"
+                         Width="50" Height="50" Background="Black" Click="Home_Click" />
+                        <TextBlock  Text="Button 3" FontSize="18" Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
                         <Button x:Name="Inventario"  FontFamily="Segoe MDL2 Assets" Content="&#xE825;"
                      Width="50" Height="50" Background="Black" Foreground="White" Click="Inventario_Click"/>
                         <TextBlock Text="Inventario" FontSize="18" Foreground="White" VerticalAlignment="Center" />
@@ -70,11 +75,7 @@
                          Width="50" Height="50" Background="Black" Click="CrearTortas_Click"/>
                         <TextBlock Foreground="White" Text="Crear Tortas" FontSize="18" VerticalAlignment="Center" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="MenuButton3" Foreground="White" FontFamily="Segoe MDL2 Assets" Content="&#xE1D6;"
-                         Width="50" Height="50" Background="Black"/>
-                        <TextBlock  Text="Button 3" FontSize="18" Foreground="White" VerticalAlignment="Center"/>
-                    </StackPanel>
+
                 </StackPanel>
             </SplitView.Pane>
             <SplitView.Content>
@@ -85,6 +86,50 @@
             </SplitView.Content>
         </SplitView>
 
+        <Grid x:Name="Principal" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Collapsed" Grid.Column="1" Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+
+            </Grid.RowDefinitions>
+
+            <ListView x:Name="TortasMostrar" Visibility="Collapsed" Tapped="TortasMostrar_Tapped" Grid.Column="0" Grid.Row="0" >
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding NombreTorta}"/>
+                            <TextBlock Text="{Binding PrecioTorta}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+
+            <ListView x:Name="SubMostrar" Visibility="Collapsed" Tapped="TortasMostrar_Tapped" Grid.Column="1" Grid.Row="0" >
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding NombreTorta}"/>
+                            <TextBlock Text="{Binding PrecioTorta}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+
+            <Button x:Name="AgregarCarrito" Content="Agregar al Carrito"  Click="AgregarCarrito_Click" Grid.Column="2" Grid.Row="0"/>
+            <Button x:Name="FinalizarCarrito" Content="Finalizar Carrito" Click="FinalizarCarrito_Click" Grid.Column="2" Grid.Row="1"/>
+        </Grid>
         <Grid x:Name="ContenedorGrid" Grid.Column="1" Grid.Row="1">
             
             <Grid x:Name="logInfrm"
@@ -133,7 +178,11 @@
             <Grid x:Name="vistaIngredientes" Visibility="Collapsed" VerticalAlignment="Top" HorizontalAlignment="Center" >
                 <ScrollViewer>
                     <StackPanel>
-                        <Grid>
+                        <Grid x:Name="popCantidad" Visibility="Collapsed">
+                            <TextBlock Text="Cantidad: "/>
+                            <TextBox x:Name="cantidadProducto"/>
+                        </Grid>
+                        <Grid x:Name="ListasProductos" Visibility="Visible">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width = "Auto" />
@@ -149,28 +198,63 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+
+
                             </Grid.RowDefinitions>
                             
 
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Cremeria" FontSize="24"/>
-                            <TextBlock Grid.Column="1" Grid.Row="0" Text="Salchichoneria" FontSize="24"/>
-                            <TextBlock Grid.Column="2" Grid.Row="0" Text="Carniceria" FontSize="24"/>
-                            <TextBlock Grid.Column="3" Grid.Row="0" Text="Abarrotes" FontSize="24"/>
+                            <TextBlock Grid.Column="2" Grid.Row="0" Text="Cremeria" FontSize="24"/>
+                            <TextBlock Grid.Column="3" Grid.Row="0" Text="Salchichoneria" FontSize="24"/>
+                            <TextBlock Grid.Column="1" Grid.Row="0" Text="Carniceria" FontSize="24"/>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Abarrotes" FontSize="24"/>
                             <TextBlock Grid.Column="4" Grid.Row="0" Text="Verduras" FontSize="24"/>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="" x:Name="auxContador"/>
-                            <Button x:Name="GetTortas" Grid.Column="4" Grid.Row="2" />
+                            <Button x:Name="GetTortas" Content="Nuevo Ingrediente" Grid.Column="4" Grid.Row="2" Click="GetTortas_Click"/>
 
-                            <ListView x:Name="lvCremeria" Grid.Column="0" Grid.Row="1" Tapped="lvCremeria_Tapped"   />
-                            <ListView x:Name="lvSalchichoneria" Grid.Column="1" Grid.Row="1" Tapped="lvSalchichoneria_Tapped" />
-                            <ListView x:Name="lvCarniceria" Grid.Column="2" Grid.Row="1" Tapped="lvCarniceria_Tapped" />
-                            <ListView x:Name="lvAbarrotes" Grid.Column="3" Grid.Row="1" Tapped="lvAbarrotes_Tapped"  />
+                            <ListView x:Name="lvAbarrotes" Grid.Column="0" Grid.Row="1" Tapped="lvAbarrotes_Tapped"  />
+                            <ListView x:Name="lvCarniceria" Grid.Column="1" Grid.Row="1" Tapped="lvCarniceria_Tapped" />
+                            <ListView x:Name="lvCremeria" Grid.Column="2" Grid.Row="1" Tapped="lvCremeria_Tapped"   />
+                            <ListView x:Name="lvSalchichoneria" Grid.Column="3" Grid.Row="1" Tapped="lvSalchichoneria_Tapped" />
                             <ListView x:Name="lvVerduras" Grid.Column="4" Grid.Row="1" Tapped="lvVerduras_Tapped" />
                             <ListView x:Name="lvTorta" Grid.Column="3" Grid.Row="2" Tapped="lvTorta_Tapped"/>
+                            
+                            <StackPanel Grid.Column="0" Grid.Row="3" Visibility="Collapsed" x:Name="IngredientesNuevos">
+                                
+                                <TextBlock Text="Nombre: "   />
+                                <TextBox x:Name="NombreTorta" Width="Auto"  />
+                                <TextBlock Text="Cantidad: "  />
+                                <TextBox x:Name="CantidadIngrediente" Width="Auto"  />
+                                <TextBlock  Text="Precio: "   />
+                                <TextBox x:Name="PrecioIngrediente" Width="Auto"  />
+                                <ListBox x:Name="SeleccionCategoria" SelectionChanged="SeleccionCategoria_SelectionChanged" SelectionMode="Single"  >
+                                    <ListBoxItem Content="Abarrotes"/>
+                                    <ListBoxItem Content="Carnicería"/>
+                                    <ListBoxItem Content="Cremería"/>
+                                    <ListBoxItem Content="Salchichonería"/>
+                                    <ListBoxItem Content="Verduras"/>
+                                </ListBox>
+                                <Button x:Name="NuevoIngrediente" Content="Crear Ingrediente" Grid.Column="1" Grid.Row="6"  Click ="NuevoIngrediente_Click" />
+                                <Button x:Name="NuevaTorta" Content="Crear Nueva Torta" Grid.Column="1" Grid.Row="6"    Visibility="Collapsed"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="0" Grid.Row="3" Visibility="Collapsed" x:Name="IngredientesTortas">
 
-                            <TextBlock x:Name="Banner" Text="Nombre de la torta: " Grid.Column="0" Grid.Row="2" Visibility="Collapsed" />
-                            <TextBox x:Name="NombreTorta" Width="Auto" Grid.Column="1" Grid.Row="2" Visibility="Collapsed"/>
-                            <Button x:Name="CrearTorta" Content="Crear!" Grid.Column="1" Grid.Row="3" Visibility="Collapsed" Click="CrearTorta_Click" />
+                                <TextBlock Text="Nombre: "   />
+                                <TextBox x:Name="NombreTortaMenu" Width="Auto"  />
+                                <TextBlock Text="Cantidad: "  />
+                                <TextBox x:Name="CantidadIngredienteTorta" Width="Auto"  />
+                                <Button x:Name="NuevoIngredienteTorta" Content="Añadir Ingrediente" Grid.Column="1" Grid.Row="6"  Click ="NuevoIngredienteTorta_Click_1" />
+                                <Button x:Name="Siguiente" Content="Siguiente Categoría" Grid.Column="1" Grid.Row="7"  Click ="Siguiente_Click" />
+                                <Button x:Name="CrearTorta" Content="Crear Torta!" Grid.Column="1" Grid.Row="3" Visibility="Collapsed" Click="CrearTorta_Click" />
+                            </StackPanel>
 
+
+
+
+
+
+                            
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>

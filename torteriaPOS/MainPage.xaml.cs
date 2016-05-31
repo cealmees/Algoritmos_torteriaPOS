@@ -30,7 +30,7 @@ namespace torteriaPOS
         public MainPage()
         {
             this.InitializeComponent();
-            
+
         }
 
         private void logIn_Click(object sender, RoutedEventArgs e)
@@ -57,6 +57,7 @@ namespace torteriaPOS
 
                 logInbtn.Visibility = Visibility.Collapsed;
                 logOutbtn.Visibility = Visibility.Visible;
+
             }
 
             else
@@ -70,7 +71,7 @@ namespace torteriaPOS
         }
 
         CargarProductosJson listas = new CargarProductosJson();
-        
+
 
         List<Productos> torta = new List<Productos>();
         private void mostrarIngredientes()
@@ -102,15 +103,6 @@ namespace torteriaPOS
             auxCremeria = lvCremeria.SelectedIndex;
         }
 
-        //private void nene_Click(object sender, RoutedEventArgs e)
-        //{
-        //    listas.cremeria[auxCremeria].Cantidad -= 100;
-        //    listas.MenuIngredientes[0].SubProductos[0].Precio = 1000;
-        //    lvCremeria.ItemsSource = null;
-        //    lvCremeria.ItemsSource = listas.cremeria;
-
-        //}
-
         private void btnHamburguesa_Click(object sender, RoutedEventArgs e)
         {
             //MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
@@ -141,16 +133,6 @@ namespace torteriaPOS
             vistaIngredientes.Visibility = Visibility.Visible;
         }
 
-        //private void GetTortas_Click(object sender, RoutedEventArgs e)
-        //{
-        //    //torta
-
-
-
-        //    tortaDeMilanesaPollo();
-        //    refrescarLv();
-        //}
-
         private void refrescarLv()
         {
             lvCremeria.ItemsSource = null;
@@ -160,38 +142,22 @@ namespace torteriaPOS
             lvSalchichoneria.ItemsSource = null;
             lvTorta.ItemsSource = null;
 
-            lvCremeria.ItemsSource = listas.MenuIngredientes[0].SubProductos;
-            lvAbarrotes.ItemsSource = listas.MenuIngredientes[1].SubProductos;
-            lvCarniceria.ItemsSource = listas.MenuIngredientes[2].SubProductos;
-            lvVerduras.ItemsSource = listas.MenuIngredientes[3].SubProductos;
-            lvSalchichoneria.ItemsSource = listas.MenuIngredientes[4].SubProductos;
+            lvAbarrotes.ItemsSource = listas.MenuIngredientes[0].SubProductos;
+            lvCarniceria.ItemsSource = listas.MenuIngredientes[1].SubProductos;
+            lvCremeria.ItemsSource = listas.MenuIngredientes[2].SubProductos;
+            lvSalchichoneria.ItemsSource = listas.MenuIngredientes[3].SubProductos;
+            lvVerduras.ItemsSource = listas.MenuIngredientes[4].SubProductos;
 
-            lvTorta.ItemsSource = listas.MenuTortas;
+            lvTorta.ItemsSource = agregarProdMenu;
         }
-        //private void tortaDeMilanesaPollo()
-        //{
-        //    //Digamos que esta torta de milanesa lleva:
-        //    //milanesa Pollo = 100 gr
-        //    //Jamon = 50 gr
-        //    //quesillo = 70 gr
-        //    //aguacate = 20 gr
-        //    //mayonesa = 20 gr
 
-        //    float[] tortaCantidad = new float[5] { 100, 50, 70, 20, 20 };
+        public float auxCant;
 
-        //    listas.abarrotes[auxAbarrote].Cantidad -= tortaCantidad[4];
-        //    listas.cremeria[auxCremeria].Cantidad -= tortaCantidad[2];
-        //    listas.verduras[auxVerduras].Cantidad -= tortaCantidad[3];
-        //    listas.salchichoneria[auxSalchichoneria].Cantidad -= tortaCantidad[1];
-        //    listas.carniceria[auxCarniceria].Cantidad -= tortaCantidad[0];
 
-        //    ArrayList contador = new ArrayList();
-
-        //}
-
+        ArrayList pruebaCantidad = new ArrayList();
         private void lvSalchichoneria_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            auxSalchichoneria = lvSalchichoneria.SelectedIndex;
+            pruebaCantidad.Add(lvSalchichoneria.SelectedIndex);
         }
 
         private void lvCarniceria_Tapped(object sender, TappedRoutedEventArgs e)
@@ -214,25 +180,108 @@ namespace torteriaPOS
             auxTorta = lvTorta.SelectedIndex;
         }
 
-        //List<TortasCreador> menuTortas = new List<TortasCreador>();
-        private void crearTortas()
+        public int auxCarrito;
+        private void TortasMostrar_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            lvAbarrotes.SelectionMode = ListViewSelectionMode.Multiple;
-            lvCarniceria.SelectionMode = ListViewSelectionMode.Multiple;
-            lvCremeria.SelectionMode = ListViewSelectionMode.Multiple;
-            lvSalchichoneria.SelectionMode = ListViewSelectionMode.Multiple;
-            lvVerduras.SelectionMode = ListViewSelectionMode.Multiple;
-            bienvenidaUsuario.Text = "Creador Tortas";
-            Banner.Visibility = Visibility.Visible;
-            NombreTorta.Visibility = Visibility.Visible;
-            CrearTorta.Visibility = Visibility.Visible;
+            auxCarrito = TortasMostrar.SelectedIndex;
         }
+
+
+
+        //List<TortasCreador> menuTortas = new List<TortasCreador>();
+
+
+        private void nuevoIngrediente()
+        {
+            //Banner1.Visibility = Visibility.Visible;
+            //Banner2.Visibility = Visibility.Visible;
+            //PrecioIngrediente.Visibility = Visibility.Visible;
+            //CantidadIngrediente.Visibility = Visibility.Visible;
+            //Banner.Visibility = Visibility.Visible;
+            //NombreTorta.Visibility = Visibility.Visible;
+            //NuevoIngrediente.Visibility = Visibility.Visible;
+            //SeleccionCategoria.Visibility = Visibility.Visible;
+
+            IngredientesNuevos.Visibility = Visibility.Visible;
+        }
+
+        List<Productos> PruebaProd = new List<Productos>();
+        private void agregarProductos()
+        {
+            PruebaProd.Clear();
+            PruebaProd.Add(new Productos
+            {
+                Producto = NombreTorta.Text,
+                Cantidad = float.Parse(CantidadIngrediente.Text),
+                Precio = float.Parse(PrecioIngrediente.Text)
+            });
+        }
+        private void NuevoIngrediente_Click(object sender, RoutedEventArgs e)
+        {
+            agregarProductos();
+            int auxIndex = SeleccionCategoria.SelectedIndex;
+            listas.MenuIngredientes[auxIndex].SubProductos.AddRange(PruebaProd);
+            refrescarLv();
+        }
+        private void GetTortas_Click(object sender, RoutedEventArgs e)
+        {
+            nuevoIngrediente();
+        }
+
 
         private void CrearTortas_Click(object sender, RoutedEventArgs e)
         {
+            NuevoIngrediente.Visibility = Visibility.Collapsed;
+            IngredientesTortas.Visibility = Visibility.Visible;
+            GetTortas.Visibility = Visibility.Collapsed;
+
             crearTortas();
         }
+        private void crearTortas()
+        {
 
+            bienvenidaUsuario.Text = "Creador Tortas";
+            //Banner.Visibility = Visibility.Visible;
+            NombreTorta.Visibility = Visibility.Visible;
+            CrearTorta.Visibility = Visibility.Visible;
+
+            lvAbarrotes.Visibility = Visibility.Visible;
+            lvCarniceria.Visibility = Visibility.Collapsed;
+            lvCremeria.Visibility = Visibility.Collapsed;
+            lvSalchichoneria.Visibility = Visibility.Collapsed;
+            lvVerduras.Visibility = Visibility.Collapsed;
+
+        }
+
+        List<Productos> agregarProdMenu = new List<Productos>();
+        public float precioTotal;
+        public int siguiente = 0;
+        public int siguienteArray = 0;
+
+        private void agregarAMenu()
+        {
+
+
+
+            int[] arrayNext = { auxAbarrote, auxCarniceria, auxCremeria, auxSalchichoneria, auxVerduras };
+
+            float pruebaux = float.Parse(CantidadIngredienteTorta.Text);
+
+            float precioParcial = (pruebaux * (listas.MenuIngredientes[siguiente].SubProductos[auxAbarrote].Precio)) / 1000;
+
+            precioTotal += precioParcial;
+            agregarProdMenu.Add(new Productos()
+            {
+
+                Producto = listas.MenuIngredientes[siguiente].SubProductos[auxAbarrote].Producto,
+                Cantidad = pruebaux,
+                Precio = precioParcial
+
+            }
+            );
+
+
+        }
         private void getDatos()
         {
             foreach (Productos item01 in lvCremeria.SelectedItems)
@@ -246,19 +295,83 @@ namespace torteriaPOS
             foreach (Productos item01 in lvSalchichoneria.SelectedItems)
                 torta.Add(item01);
         }
+        private void NuevoIngredienteTorta_Click_1(object sender, RoutedEventArgs e)
+        {
+            lvCarniceria.Visibility = Visibility.Visible;
+
+            agregarAMenu();
+            lvCarniceria.ItemsSource = null;
+            lvCarniceria.ItemsSource = agregarProdMenu;
+        }
 
         private void CrearTorta_Click(object sender, RoutedEventArgs e)
         {
-            getDatos();
-
+            lvCremeria.Visibility = Visibility.Visible;
+            lvCremeria.ItemsSource = null;
 
             listas.MenuTortas.Add(new TortasCreador()
             {
-                NombreTorta = NombreTorta.Text,
-                PrecioTorta = 50,
-                IngredientesTorta = torta
+                NombreTorta = NombreTortaMenu.Text,
+                PrecioTorta = (precioTotal / 25) + precioTotal,
+                IngredientesTorta = agregarProdMenu
             });
-            refrescarLv();
+
+            //agregarProdMenu.Clear();
+            precioTotal = 0;
+            lvCremeria.ItemsSource = listas.MenuTortas;
+
+        }
+
+        private void SeleccionCategoria_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Siguiente_Click(object sender, RoutedEventArgs e)
+        {
+
+            siguiente++;
+            siguienteArray++;
+            lvAbarrotes.ItemsSource = null;
+            lvAbarrotes.ItemsSource = listas.MenuIngredientes[siguiente].SubProductos;
+            //refrescarLv();
+        }
+
+
+
+        private void AgregarCarrito_Click(object sender, RoutedEventArgs e)
+        {
+            SubMostrar.Visibility = Visibility.Visible;
+            añadirCarrito();
+            SubMostrar.ItemsSource = null;
+            SubMostrar.ItemsSource = carrito;
+        }
+        List<TortasCreador> carrito = new List<TortasCreador>();
+
+        private void FinalizarCarrito_Click(object sender, RoutedEventArgs e)
+        {
+            //TortasCreador resultado = carrito.Find();
+
+            List<Productos> Grande = new List<Productos>();
+            List<Productos> Chica = new List<Productos>();
+            
+            
+
+        }
+
+        private void añadirCarrito()
+        {
+            SubMostrar.ItemsSource = null;
+            SubMostrar.ItemsSource = carrito;
+            carrito.Add(listas.MenuTortas[auxCarrito]);
+            
+        }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            Principal.Visibility = Visibility.Visible;
+            TortasMostrar.Visibility = Visibility.Visible;
+            TortasMostrar.ItemsSource = listas.MenuTortas;
+            
         }
     }
 }
