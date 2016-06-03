@@ -35,6 +35,13 @@ namespace torteriaPOS
 
         }
 
+        public async void crearJsonRegistro()
+        {
+            Windows.Storage.StorageFolder fileFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile archivoPrueba = await fileFolder.CreateFileAsync("registroDiario.json", Windows.Storage.CreationCollisionOption.ReplaceExisting);
+
+        }
+
         public async Task escribirJsonIngredientes()
         {
             try
@@ -70,6 +77,29 @@ namespace torteriaPOS
 
                 Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
                 Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("menuTorta.json");
+
+                using (var s = await sampleFile.OpenStreamForWriteAsync())
+                {
+                    s.Write(fileBytes, 0, fileBytes.Length);
+                }
+            }
+            catch (FileLoadException) { }
+            catch (FieldAccessException) { }
+
+        }
+
+        public async Task escribirRegistroDiario()
+        {
+            try
+            {
+                crearJsonRegistro();
+
+                string json = JsonConvert.SerializeObject(nuevo.Registro.ToArray(), Formatting.Indented);
+
+                byte[] fileBytes = System.Text.Encoding.UTF8.GetBytes(json.ToCharArray());
+
+                Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                Windows.Storage.StorageFile sampleFile = await storageFolder.GetFileAsync("registroDiario.json");
 
                 using (var s = await sampleFile.OpenStreamForWriteAsync())
                 {

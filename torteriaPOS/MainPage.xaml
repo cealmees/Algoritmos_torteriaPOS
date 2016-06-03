@@ -92,27 +92,36 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
 
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
 
             </Grid.RowDefinitions>
 
-            <ListView x:Name="TortasMostrar" Visibility="Collapsed" Tapped="TortasMostrar_Tapped" Grid.Column="0" Grid.Row="0" >
+            <StackPanel>
+                <ListView x:Name="TortasMostrar" Visibility="Collapsed" Tapped="TortasMostrar_Tapped" Grid.Column="0" Grid.Row="0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding NombreTorta}"/>
+                                <TextBlock Text="{Binding PrecioTorta}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
 
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding NombreTorta}"/>
-                            <TextBlock Text="{Binding PrecioTorta}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
 
-            </ListView>
+
 
             <ListView x:Name="SubMostrar" Visibility="Collapsed" Tapped="TortasMostrar_Tapped" Grid.Column="1" Grid.Row="0" >
 
@@ -127,8 +136,19 @@
 
             </ListView>
 
+    
+                <ListView x:Name="Registro" Visibility="Collapsed"  Grid.Column="0" Grid.Row="3" />
+    
+
+
+
+
             <Button x:Name="AgregarCarrito" Content="Agregar al Carrito"  Click="AgregarCarrito_Click" Grid.Column="2" Grid.Row="0"/>
             <Button x:Name="FinalizarCarrito" Content="Finalizar Carrito" Click="FinalizarCarrito_Click" Grid.Column="2" Grid.Row="1"/>
+            <Button x:Name="MostrarResumen" Content="Mostrar Resumen del Día" Click="MostrarResumen_Click" Grid.Column="2" Grid.Row="2"/>
+            <TextBlock Text="Total a pagar: " Grid.Column="3" Grid.Row="0"/>
+            <TextBlock x:Name="pagar" Grid.Column="4" Grid.Row="0"/>
+            
         </Grid>
         <Grid x:Name="ContenedorGrid" Grid.Column="1" Grid.Row="1">
             

@@ -87,7 +87,7 @@ namespace torteriaPOS
 
 
 
-            lvTorta.ItemsSource = torta;
+            //lvTorta.ItemsSource = torta;
         }
 
 
@@ -114,6 +114,8 @@ namespace torteriaPOS
             ActualizarJson MenuTortas = new ActualizarJson(listas);
             await MenuTortas.escribirJsonMenu();
             await guardarDatos();
+
+
             Application.Current.Exit();
         }
 
@@ -122,15 +124,30 @@ namespace torteriaPOS
             ActualizarJson Datos = new ActualizarJson(listas);
             await Datos.escribirJsonIngredientes();
             await Datos.escribirJsonMenu();
+            await Datos.escribirRegistroDiario();
         }
 
 
         private void Inventario_Click(object sender, RoutedEventArgs e)
         {
+
+            NuevoIngrediente.Visibility = Visibility.Visible;
+            IngredientesTortas.Visibility = Visibility.Collapsed;
+            GetTortas.Visibility = Visibility.Visible;
+            mostrarIngredientes();
+            lvAbarrotes.Visibility = Visibility.Visible;
+            lvCarniceria.Visibility = Visibility.Visible;
+            lvCremeria.Visibility = Visibility.Visible;
+            lvSalchichoneria.Visibility = Visibility.Visible;
+            lvVerduras.Visibility = Visibility.Visible;
+            refrescarLv();
+            Principal.Visibility = Visibility.Collapsed;
             bienvenidaUsuario.Text = "Inventario";
             bienvenidaUsuario.Visibility = Visibility.Visible;
-            mostrarIngredientes();
+            //mostrarIngredientes();
             vistaIngredientes.Visibility = Visibility.Visible;
+            ListasProductos.Visibility = Visibility.Visible;
+
         }
 
         private void refrescarLv()
@@ -262,9 +279,6 @@ namespace torteriaPOS
         {
 
 
-
-            int[] arrayNext = { auxAbarrote, auxCarniceria, auxCremeria, auxSalchichoneria, auxVerduras };
-
             float pruebaux = float.Parse(CantidadIngredienteTorta.Text);
 
             float precioParcial = (pruebaux * (listas.MenuIngredientes[siguiente].SubProductos[auxAbarrote].Precio)) / 1000;
@@ -345,18 +359,60 @@ namespace torteriaPOS
             añadirCarrito();
             SubMostrar.ItemsSource = null;
             SubMostrar.ItemsSource = carrito;
+            bienvenidaUsuario.Visibility = Visibility.Visible;
+            for (int i = 0; i < carrito.Count; i++)
+            {
+                for (int a = 0; a < carrito[i].IngredientesTorta.Count; a++)
+                {
+
+                    for (int b = 0; b < listas.MenuIngredientes.Count; b++)
+                    {
+                        
+                            int aux = listas.MenuIngredientes[b].SubProductos.FindIndex(op => op.Producto == carrito[i].IngredientesTorta[a].Producto);
+                            if (aux >= 0)
+                            {
+                                listas.MenuIngredientes[b].SubProductos[aux].Cantidad -= carrito[i].IngredientesTorta[a].Cantidad;
+
+                            }
+                    }
+
+                }
+
+            }
+          
+
+
         }
         List<TortasCreador> carrito = new List<TortasCreador>();
 
         private void FinalizarCarrito_Click(object sender, RoutedEventArgs e)
         {
-            //TortasCreador resultado = carrito.Find();
-
-            List<Productos> Grande = new List<Productos>();
-            List<Productos> Chica = new List<Productos>();
+            float preciototal = 0;
+            for (int i = 0; i < carrito.Count; i++)
+            {
+                foreach (Productos registro in carrito[i].IngredientesTorta)
+                {
+                    preciototal += registro.Precio;
+                }
+            }
             
-            
 
+            pagar.Text = " $"+preciototal.ToString()+"MXN";
+
+            Guid g = Guid.NewGuid();
+            string GuidString = Convert.ToBase64String(g.ToByteArray());
+            GuidString = GuidString.Replace("=", "");
+            GuidString = GuidString.Replace("+", "");
+
+            DateTime localDate = DateTime.Now;
+            double preganancias = preciototal * 1.25;
+            listas.Registro.Add(new RegistroEntradas()
+            {
+                FechaHora = localDate.ToString(),
+                Ganancias =  (float)preganancias,
+                VentaTotal = preciototal,
+                ID = GuidString
+                });
         }
 
         private void añadirCarrito()
@@ -371,7 +427,19 @@ namespace torteriaPOS
             Principal.Visibility = Visibility.Visible;
             TortasMostrar.Visibility = Visibility.Visible;
             TortasMostrar.ItemsSource = listas.MenuTortas;
-            
+            IngredientesTortas.Visibility = Visibility.Collapsed;
+            IngredientesNuevos.Visibility =Visibility.Collapsed;
+            ListasProductos.Visibility = Visibility.Collapsed;
+
+        }
+
+        private void MostrarResumen_Click(object sender, RoutedEventArgs e)
+        {
+            Registro.Visibility = Visibility.Visible;
+
+            Registro.ItemsSource = listas.Registro;
+            Registro.Visibility = Visibility.Visible;
+
         }
     }
 }

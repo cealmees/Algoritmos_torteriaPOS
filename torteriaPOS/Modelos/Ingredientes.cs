@@ -62,6 +62,19 @@ namespace torteriaPOS
 
     }
 
+    public class RegistroEntradas
+    {
+        public string FechaHora { get; set; }
+        public float VentaTotal { get; set; }
+        public float Ganancias { get; set; }
+        public string ID { get; set; }
+
+        public override string ToString()
+        {
+            return this.FechaHora + " " + this.ID + " " + this.VentaTotal.ToString() + " " + this.Ganancias.ToString()+"\n";
+        }
+    }
+
         
 
 }
