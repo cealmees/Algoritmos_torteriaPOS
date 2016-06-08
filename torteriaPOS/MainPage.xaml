@@ -75,6 +75,30 @@
                          Width="50" Height="50" Background="Black" Click="CrearTortas_Click"/>
                         <TextBlock Foreground="White" Text="Crear Tortas" FontSize="18" VerticalAlignment="Center" />
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="Estadisiticas" FontFamily="Segoe MDL2 Assets" Foreground="White" Content="&#xE10F;"
+                         Width="50" Height="50" Background="Black" Click="Estadisiticas_Click"/>
+                        <TextBlock Foreground="White" Text="Estadísticas" FontSize="18" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="Ventas" FontFamily="Segoe MDL2 Assets" Foreground="White" Content="&#xE10F;"
+                         Width="50" Height="50" Background="Black" Click="Ventas_Click"/>
+                        <TextBlock Foreground="White" Text="Ventas" FontSize="18" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="RegistroH" FontFamily="Segoe MDL2 Assets" Foreground="White" Content="&#xE10F;"
+                         Width="50" Height="50" Background="Black" Click="RegistroH_Click"/>
+                        <TextBlock Foreground="White" Text="Ventas" FontSize="18" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="PlusValor" FontFamily="Segoe MDL2 Assets" Foreground="White" Content="&#xE10F;"
+                         Width="50" Height="50" Background="Black" Click="PlusValor_Click"/>
+                        <TextBlock Foreground="White" Text="Ventas" FontSize="18" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="CantidadAgregar" FontFamily="Segoe MDL2 Assets" Foreground="White" Content="&#xE10F;"
+                         Width="50" Height="50" Background="Black" Click="CantidadAgregar_Click"/>
+                    </StackPanel>
 
                 </StackPanel>
             </SplitView.Pane>
@@ -224,7 +248,7 @@
 
 
                             </Grid.RowDefinitions>
-                            
+
 
                             <TextBlock Grid.Column="2" Grid.Row="0" Text="Cremeria" FontSize="24"/>
                             <TextBlock Grid.Column="3" Grid.Row="0" Text="Salchichoneria" FontSize="24"/>
@@ -239,9 +263,9 @@
                             <ListView x:Name="lvSalchichoneria" Grid.Column="3" Grid.Row="1" Tapped="lvSalchichoneria_Tapped" />
                             <ListView x:Name="lvVerduras" Grid.Column="4" Grid.Row="1" Tapped="lvVerduras_Tapped" />
                             <ListView x:Name="lvTorta" Grid.Column="3" Grid.Row="2" Tapped="lvTorta_Tapped"/>
-                            
+
                             <StackPanel Grid.Column="0" Grid.Row="3" Visibility="Collapsed" x:Name="IngredientesNuevos">
-                                
+
                                 <TextBlock Text="Nombre: "   />
                                 <TextBox x:Name="NombreTorta" Width="Auto"  />
                                 <TextBlock Text="Cantidad: "  />
@@ -274,12 +298,150 @@
 
 
 
-                            
+
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
-                
+            <Grid x:Name="EstadisticasGrid" Visibility="Collapsed" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "50" />
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Articulos Populares" FontSize="24"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="Baja Cantidad" FontSize="24"/>
+
+                <ListView x:Name="lvPopulares" Grid.Column="0" Grid.Row="1"   />
+                <ListView x:Name="lvBajaCantidad" Grid.Column="1" Grid.Row="1"   />
+
+
+            </Grid>
+
+
+            <Grid x:Name="ResumenVentas" Visibility="Collapsed" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "50" />
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Ventas Del Día" FontSize="24"/>
+                <TextBlock  x:Name="tbVentaDia" Grid.Column="1" Grid.Row="0"  FontSize="24"/>
+                <TextBlock  x:Name="tbUtilidadDia" Grid.Column="1" Grid.Row="1"  FontSize="24"/>
+
+                <ListView x:Name="lvVentas" Grid.Column="0" Grid.Row="1" Tapped="lvVentas_Tapped"  />
+
+
+            </Grid>
+
+            <Grid x:Name="ResumenHistorico" Visibility="Collapsed" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "50" />
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Ventas Historico" FontSize="24"/>
+                <TextBlock  x:Name="tbVentaDiah" Grid.Column="1" Grid.Row="0"  FontSize="24"/>
+                <TextBlock  x:Name="tbUtilidadDiah" Grid.Column="1" Grid.Row="1"  FontSize="24"/>
+
+                <ListView x:Name="lvVentash" Grid.Column="0" Grid.Row="1" Tapped="lvVentas_Tapped"  />
+
+
+            </Grid>
+            <Grid x:Name="PlusValorGrid" Visibility="Collapsed" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Plusvalor Ingredientes" FontSize="24"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="Ingrese el Porcentaje" FontSize="24"/>
+                <TextBox Grid.Column="0" Grid.Row="2"  FontSize="24" x:Name="porcentaje"/>
+                <Button x:Name="EnviarPlusValor" Grid.Column="0" Grid.Row="3" Click="EnviarPlusValor_Click" Content="Enviar"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="Precios Actualizados Correctamente" x:Name="Exito" Visibility="Collapsed" FontSize="24"/>
+
+
+
+
+            </Grid>
+
+            <Grid x:Name="agregarCantidad" Visibility="Collapsed" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+                    <ColumnDefinition Width = "Auto" />
+
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Indique producto a modificar" FontSize="24"/>
+                <TextBlock Grid.Column="1" Grid.Row="0"   Visibility="Collapsed" FontSize="24" x:Name="Exito0"/>
+                <ListView x:Name="lvModificar" Grid.Column="0" Grid.Row="1" Tapped="lvModificar_Tapped"  />
+                <TextBox Grid.Column="0" Grid.Row="2"  FontSize="24" x:Name="CantidadNueva"/>
+                <Button x:Name="SiguienteLista" Grid.Column="1" Grid.Row="1" Click="SiguienteLista_Click" Content="Siguiente Lista"/>
+                <Button x:Name="EnviarCantidad" Grid.Column="1" Grid.Row="2" Click="EnviarCantidad_Click" Content="Enviar Cantidad"/>
+
+
+
+
+            </Grid>
+
         </Grid>
         
     </Grid>

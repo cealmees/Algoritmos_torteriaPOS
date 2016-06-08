@@ -16,6 +16,7 @@ namespace torteriaPOS
         {
             leerMenuIngredientes();
             leerMenuTortas();
+            RegistroDiario();
         }
         public List<IngredientesCategoria> MenuIngredientes = new List<IngredientesCategoria>();
 

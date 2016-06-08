@@ -13,6 +13,7 @@ namespace torteriaPOS
         public string Producto { get; set; }
         public float Cantidad { get; set; }
         public float Precio { get; set; }
+        public int Popularidad { get; set; }
 
         public override string ToString()
         {
@@ -69,10 +70,31 @@ namespace torteriaPOS
         public float Ganancias { get; set; }
         public string ID { get; set; }
 
+        //string GananciasString = string
+
         public override string ToString()
         {
-            return this.FechaHora + " " + this.ID + " " + this.VentaTotal.ToString() + " " + this.Ganancias.ToString()+"\n";
+            return this.FechaHora + "\t" + this.ID + "\t" + this.VentaTotal + "\t" + this.Ganancias +"\n";
         }
+    }
+
+    public class RegistroDiario
+    {
+        public string FechaDia { get; set; }
+        public List<RegistroEntradas> RegistroEntradas { get; set; }
+
+        public override string ToString()
+        {
+
+            StringBuilder salidaMenu = new StringBuilder();
+            salidaMenu.AppendFormat("Fecha: {0}\n", FechaDia);
+            foreach (RegistroEntradas valor in RegistroEntradas)
+            {
+                salidaMenu.AppendFormat("\n{0}", valor);
+            }
+            return salidaMenu.ToString();
+        }
+
     }
 
         

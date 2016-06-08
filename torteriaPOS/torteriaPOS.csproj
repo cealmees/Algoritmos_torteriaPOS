@@ -94,7 +94,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="DB\login.Json" />
-    <Content Include="DB\Ingredientes.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

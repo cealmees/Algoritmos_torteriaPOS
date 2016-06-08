@@ -147,7 +147,11 @@ namespace torteriaPOS
             //mostrarIngredientes();
             vistaIngredientes.Visibility = Visibility.Visible;
             ListasProductos.Visibility = Visibility.Visible;
-
+            EstadisticasGrid.Visibility = Visibility.Collapsed;
+            ResumenVentas.Visibility = Visibility.Collapsed;
+            ResumenHistorico.Visibility = Visibility.Collapsed;
+            PlusValorGrid.Visibility = Visibility.Collapsed;
+            agregarCantidad.Visibility = Visibility.Collapsed;
         }
 
         private void refrescarLv()
@@ -251,6 +255,8 @@ namespace torteriaPOS
             NuevoIngrediente.Visibility = Visibility.Collapsed;
             IngredientesTortas.Visibility = Visibility.Visible;
             GetTortas.Visibility = Visibility.Collapsed;
+            EstadisticasGrid.Visibility = Visibility.Collapsed;
+            PlusValorGrid.Visibility = Visibility.Collapsed;
 
             crearTortas();
         }
@@ -267,11 +273,15 @@ namespace torteriaPOS
             lvCremeria.Visibility = Visibility.Collapsed;
             lvSalchichoneria.Visibility = Visibility.Collapsed;
             lvVerduras.Visibility = Visibility.Collapsed;
+            EstadisticasGrid.Visibility = Visibility.Collapsed;
+            ResumenVentas.Visibility = Visibility.Collapsed;
+            ResumenHistorico.Visibility = Visibility.Collapsed;
+            PlusValorGrid.Visibility = Visibility.Collapsed;
+            agregarCantidad.Visibility = Visibility.Collapsed;
 
         }
 
         List<Productos> agregarProdMenu = new List<Productos>();
-        public float precioTotal;
         public int siguiente = 0;
         public int siguienteArray = 0;
 
@@ -281,15 +291,15 @@ namespace torteriaPOS
 
             float pruebaux = float.Parse(CantidadIngredienteTorta.Text);
 
-            float precioParcial = (pruebaux * (listas.MenuIngredientes[siguiente].SubProductos[auxAbarrote].Precio)) / 1000;
+            double precioParcial = (pruebaux * (listas.MenuIngredientes[siguiente].SubProductos[auxAbarrote].Precio)) / 1000;
 
-            precioTotal += precioParcial;
+            //precioTotal += (float)precioParcial;
             agregarProdMenu.Add(new Productos()
             {
 
                 Producto = listas.MenuIngredientes[siguiente].SubProductos[auxAbarrote].Producto,
                 Cantidad = pruebaux,
-                Precio = precioParcial
+                Precio = (float)precioParcial
 
             }
             );
@@ -322,6 +332,10 @@ namespace torteriaPOS
         {
             lvCremeria.Visibility = Visibility.Visible;
             lvCremeria.ItemsSource = null;
+            float precioTotal = 0;
+
+            foreach (Productos valor in agregarProdMenu)
+                precioTotal += valor.Precio;
 
             listas.MenuTortas.Add(new TortasCreador()
             {
@@ -367,19 +381,20 @@ namespace torteriaPOS
 
                     for (int b = 0; b < listas.MenuIngredientes.Count; b++)
                     {
-                        
-                            int aux = listas.MenuIngredientes[b].SubProductos.FindIndex(op => op.Producto == carrito[i].IngredientesTorta[a].Producto);
-                            if (aux >= 0)
-                            {
-                                listas.MenuIngredientes[b].SubProductos[aux].Cantidad -= carrito[i].IngredientesTorta[a].Cantidad;
 
-                            }
+                        int aux = listas.MenuIngredientes[b].SubProductos.FindIndex(op => op.Producto == carrito[i].IngredientesTorta[a].Producto);
+                        if (aux >= 0)
+                        {
+                            listas.MenuIngredientes[b].SubProductos[aux].Cantidad -= carrito[i].IngredientesTorta[a].Cantidad;
+                            listas.MenuIngredientes[b].SubProductos[aux].Popularidad+=1;
+                        }
+
                     }
 
                 }
 
             }
-          
+
 
 
         }
@@ -387,17 +402,17 @@ namespace torteriaPOS
 
         private void FinalizarCarrito_Click(object sender, RoutedEventArgs e)
         {
-            float preciototal = 0;
-            for (int i = 0; i < carrito.Count; i++)
-            {
-                foreach (Productos registro in carrito[i].IngredientesTorta)
-                {
-                    preciototal += registro.Precio;
-                }
-            }
-            
+            double preciototalCompra = 0;
+            //for (int i = 0; i < carrito.Count; i++)
+            //{
+            //    foreach (Productos registro in carrito[i].IngredientesTorta)
+            //    {
+            //        preciototalCompra += registro.Precio;
+            //    }
+            //}
 
-            pagar.Text = " $"+preciototal.ToString()+"MXN";
+
+            pagar.Text = (" $" + precioTortaCarrito + " MXN");
 
             Guid g = Guid.NewGuid();
             string GuidString = Convert.ToBase64String(g.ToByteArray());
@@ -405,41 +420,352 @@ namespace torteriaPOS
             GuidString = GuidString.Replace("+", "");
 
             DateTime localDate = DateTime.Now;
-            double preganancias = preciototal * 1.25;
+            double preganancias = (precioTortaCarrito-(precioTortaCarrito/1.25));
             listas.Registro.Add(new RegistroEntradas()
             {
-                FechaHora = localDate.ToString(),
-                Ganancias =  (float)preganancias,
-                VentaTotal = preciototal,
+                FechaHora = localDate.ToString("yyyy/MMMM/dd"),
+                Ganancias = (float)preganancias,
+                VentaTotal = (float)precioTortaCarrito,
                 ID = GuidString
-                });
-        }
+            });
 
+            precioTortaCarrito = 0;
+            carrito.Clear();
+        }
+        public float precioTortaCarrito;
         private void añadirCarrito()
         {
             SubMostrar.ItemsSource = null;
             SubMostrar.ItemsSource = carrito;
             carrito.Add(listas.MenuTortas[auxCarrito]);
-            
+            precioTortaCarrito += listas.MenuTortas[auxCarrito].PrecioTorta;
+
         }
         private void Home_Click(object sender, RoutedEventArgs e)
         {
             Principal.Visibility = Visibility.Visible;
             TortasMostrar.Visibility = Visibility.Visible;
+            TortasMostrar.ItemsSource = null;
             TortasMostrar.ItemsSource = listas.MenuTortas;
             IngredientesTortas.Visibility = Visibility.Collapsed;
-            IngredientesNuevos.Visibility =Visibility.Collapsed;
+            IngredientesNuevos.Visibility = Visibility.Collapsed;
             ListasProductos.Visibility = Visibility.Collapsed;
-
+            EstadisticasGrid.Visibility = Visibility.Collapsed;
+            ResumenVentas.Visibility = Visibility.Collapsed;
+            ResumenHistorico.Visibility = Visibility.Collapsed;
+            PlusValorGrid.Visibility = Visibility.Collapsed;
+            agregarCantidad.Visibility = Visibility.Collapsed;
         }
 
         private void MostrarResumen_Click(object sender, RoutedEventArgs e)
         {
             Registro.Visibility = Visibility.Visible;
-
+            
             Registro.ItemsSource = listas.Registro;
             Registro.Visibility = Visibility.Visible;
 
+        }
+
+        private List<Productos> ingredientesFavoritos()
+        {
+            List<Productos> listaFavoritos = new List<Productos>();
+
+            for (int i = 0; i < listas.MenuIngredientes.Count; i++)
+            {
+                foreach (Productos transferir in listas.MenuIngredientes[i].SubProductos)
+                    listaFavoritos.Add(transferir);
+            }
+
+            listaFavoritos.Sort((x, y) => y.Popularidad.CompareTo(x.Popularidad));
+
+            //for (int i = 0; i <= (listaFavoritos.Count); i++)
+            //{
+            //    listaFavoritos.RemoveAt(i);
+            //}
+            List<Productos> auxFav = new List<Productos>();
+            for (int i = 0; i < 5; i++)
+            {
+                auxFav.Add(listaFavoritos[i]);
+            }
+            return auxFav;
+
+            //for (int i = 0; i < listaFavoritos.Count; i++)
+            //{
+            //    listaFavoritos[i].Popularidad = 0;
+            //}
+
+            //return listaFavoritos;
+
+
+            //for (int i = 0; i < listas.MenuIngredientes.Count; i++)
+            //{
+            //    for (int j = 0; j < listas.MenuIngredientes[i].SubProductos.Count; j++)
+            //    {
+            //        foreach (Productos popularidad in listas.MenuIngredientes[i].SubProductos)
+            //        {
+
+            //        }
+            //    }
+            //}
+
+
+        }
+
+        private void Estadisiticas_Click(object sender, RoutedEventArgs e)
+        {
+            Principal.Visibility = Visibility.Collapsed;
+            TortasMostrar.Visibility = Visibility.Collapsed;
+            IngredientesTortas.Visibility = Visibility.Collapsed;
+            IngredientesNuevos.Visibility = Visibility.Collapsed;
+            ListasProductos.Visibility = Visibility.Collapsed;
+            EstadisticasGrid.Visibility = Visibility.Visible;
+            ResumenVentas.Visibility = Visibility.Collapsed;
+            ResumenHistorico.Visibility = Visibility.Collapsed;
+            PlusValorGrid.Visibility = Visibility.Collapsed;
+            agregarCantidad.Visibility = Visibility.Collapsed;
+
+            lvPopulares.ItemsSource = null;
+            lvPopulares.ItemsSource = ingredientesFavoritos();
+            lvBajaCantidad.ItemsSource = null;
+            lvBajaCantidad.ItemsSource = alertaCantidad();
+        }
+
+        List <Productos> alertaCantidad()
+        {
+            List<Productos> cantidadPoca = new List<Productos>();
+            for (int i = 0; i < listas.MenuIngredientes.Count; i++)
+            {
+                foreach (Productos transferir in listas.MenuIngredientes[i].SubProductos)
+                {
+                    if (transferir.Cantidad < 1000)
+                        cantidadPoca.Add(transferir);
+                    
+                }
+
+                    
+                        
+            }
+            return cantidadPoca;
+        }
+        private void lvVentas_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            lvVentas.ItemsSource = null;
+            lvVentas.ItemsSource = listas.Registro;
+
+        }
+
+        private void Ventas_Click(object sender, RoutedEventArgs e)
+        {
+
+            Principal.Visibility = Visibility.Collapsed;
+            TortasMostrar.Visibility = Visibility.Collapsed;
+            IngredientesTortas.Visibility = Visibility.Collapsed;
+            IngredientesNuevos.Visibility = Visibility.Collapsed;
+            ListasProductos.Visibility = Visibility.Collapsed;
+            EstadisticasGrid.Visibility = Visibility.Collapsed;
+            ResumenVentas.Visibility = Visibility.Visible;
+            ResumenHistorico.Visibility = Visibility.Collapsed;
+            PlusValorGrid.Visibility = Visibility.Collapsed;
+            agregarCantidad.Visibility = Visibility.Collapsed;
+            lvVentas.ItemsSource = null;
+
+            List<RegistroEntradas> Diario = new List<RegistroEntradas>();
+            int result = 0;
+            float calcBrut = 0;
+            DateTime prueba = DateTime.Now;
+            string prueba0 = prueba.ToString("yyyy/MM/dd");
+            //for (int i = 0; i < listas.Registro.Count; i++)
+            //{
+            foreach (RegistroEntradas transferir in listas.Registro)
+            {
+                result = DateTime.Compare(DateTime.Parse(prueba0), DateTime.Parse(transferir.FechaHora));
+                if (result == 0)
+                    Diario.Add(transferir);
+            }
+
+
+            lvVentas.ItemsSource = Diario;
+            tbVentaDia.Text = "Venta Bruta: "+ ventaBruta().ToString();
+            tbUtilidadDia.Text = "Venta Utilidad: " + ventaUtilidad().ToString();
+
+        }
+
+
+        private float ventaUtilidad()
+        {
+            int result = 0;
+            float calcBrut = 0;
+            DateTime prueba = DateTime.Now;
+            string prueba0 = prueba.ToString("yyyy/MM/dd");
+            //for (int i = 0; i < listas.Registro.Count; i++)
+            //{
+            foreach (RegistroEntradas transferir in listas.Registro)
+            {
+                result = DateTime.Compare(DateTime.Parse(prueba0), DateTime.Parse(transferir.FechaHora));
+                if (result == 0)
+                    calcBrut += transferir.Ganancias;
+            }
+            return calcBrut;
+            //}
+
+        }
+        private float ventaBruta()
+        {
+            int result = 0;
+            float calcBrut = 0;
+            DateTime prueba = DateTime.Now;
+            string prueba0 = prueba.ToString("yyyy/MM/dd");
+            //for (int i = 0; i < listas.Registro.Count; i++)
+            //{
+                foreach (RegistroEntradas transferir in listas.Registro)
+                {
+                    result = DateTime.Compare(DateTime.Parse(prueba0), DateTime.Parse(transferir.FechaHora));
+                if (result == 0)
+                    calcBrut += transferir.VentaTotal;
+                }
+            return calcBrut;
+            //}
+            
+        }
+
+        private void RegistroH_Click(object sender, RoutedEventArgs e)
+        {
+            Principal.Visibility = Visibility.Collapsed;
+            TortasMostrar.Visibility = Visibility.Collapsed;
+            IngredientesTortas.Visibility = Visibility.Collapsed;
+            IngredientesNuevos.Visibility = Visibility.Collapsed;
+            ListasProductos.Visibility = Visibility.Collapsed;
+            EstadisticasGrid.Visibility = Visibility.Collapsed;
+            ResumenVentas.Visibility = Visibility.Collapsed;
+            ResumenHistorico.Visibility = Visibility.Visible;
+            PlusValorGrid.Visibility = Visibility.Collapsed;
+            agregarCantidad.Visibility = Visibility.Collapsed;
+            lvVentas.ItemsSource = null;
+
+            int result = 0;
+            float calcBrut = 0;
+            DateTime prueba = DateTime.Now;
+            string prueba0 = prueba.ToString("yyyy/MM/dd");
+            //for (int i = 0; i < listas.Registro.Count; i++)
+            //{
+
+
+            lvVentash.ItemsSource = null;
+            lvVentash.ItemsSource = listas.Registro;
+            tbVentaDiah.Text = "Venta Bruta: " + ventaBrutah().ToString();
+            tbUtilidadDiah.Text = "Venta Utilidad: " + ventaUtilidadh().ToString();
+        }
+
+
+        private float ventaUtilidadh()
+        {
+            int result = 0;
+            float calcBrut = 0;
+ 
+            //for (int i = 0; i < listas.Registro.Count; i++)
+            //{
+            foreach (RegistroEntradas transferir in listas.Registro)
+            {
+                if (result == 0)
+                    calcBrut += transferir.Ganancias;
+            }
+            return calcBrut;
+            //}
+
+        }
+        private float ventaBrutah()
+        {
+            int result = 0;
+            float calcBrut = 0;
+            //for (int i = 0; i < listas.Registro.Count; i++)
+            //{
+            foreach (RegistroEntradas transferir in listas.Registro)
+            {
+                    calcBrut += transferir.VentaTotal;
+            }
+            return calcBrut;
+            //}
+
+        }
+
+        private void PlusValor_Click(object sender, RoutedEventArgs e)
+        {
+            Principal.Visibility = Visibility.Collapsed;
+            TortasMostrar.Visibility = Visibility.Collapsed;
+            IngredientesTortas.Visibility = Visibility.Collapsed;
+            IngredientesNuevos.Visibility = Visibility.Collapsed;
+            ListasProductos.Visibility = Visibility.Collapsed;
+            EstadisticasGrid.Visibility = Visibility.Collapsed;
+            ResumenVentas.Visibility = Visibility.Collapsed;
+            ResumenHistorico.Visibility = Visibility.Collapsed;
+            PlusValorGrid.Visibility = Visibility.Visible;
+            Exito.Visibility = Visibility.Collapsed;
+            agregarCantidad.Visibility = Visibility.Collapsed;
+            porcentaje.Text = "";
+        }
+
+        private void EnviarPlusValor_Click(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < listas.MenuIngredientes.Count; i++)
+            {
+                foreach (Productos cambiar in listas.MenuIngredientes[i].SubProductos)
+                {
+                    cambiar.Precio += (cambiar.Precio * ((float.Parse(porcentaje.Text)/100)));
+                }
+                Exito.Visibility = Visibility.Visible;
+            }
+
+            //for (int i = 0; i < listas.MenuTortas.Count; i++)
+            //{
+            //    foreach (TortasCreador cambiar in listas.MenuTortas[i].)
+            //}
+
+            foreach (TortasCreador cambiar in listas.MenuTortas)
+            {
+                cambiar.PrecioTorta += (cambiar.PrecioTorta * ((float.Parse(porcentaje.Text) / 100)));
+            }
+
+        }
+
+        private void CantidadAgregar_Click(object sender, RoutedEventArgs e)
+        {
+            agregarCantidad.Visibility = Visibility.Visible;
+            Principal.Visibility = Visibility.Collapsed;
+            TortasMostrar.Visibility = Visibility.Collapsed;
+            IngredientesTortas.Visibility = Visibility.Collapsed;
+            IngredientesNuevos.Visibility = Visibility.Collapsed;
+            ListasProductos.Visibility = Visibility.Collapsed;
+            EstadisticasGrid.Visibility = Visibility.Collapsed;
+            ResumenVentas.Visibility = Visibility.Collapsed;
+            ResumenHistorico.Visibility = Visibility.Collapsed;
+            PlusValorGrid.Visibility = Visibility.Collapsed;
+            Exito.Visibility = Visibility.Collapsed;
+            Exito0.Visibility = Visibility.Collapsed;
+            lvModificar.ItemsSource = null;
+            lvModificar.ItemsSource = listas.MenuIngredientes[0].SubProductos;
+
+
+        }
+        public int indexCantidad;
+        public int indexAux;
+        private void lvModificar_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            indexCantidad = lvModificar.SelectedIndex;
+
+        }
+
+        private void SiguienteLista_Click(object sender, RoutedEventArgs e)
+        {
+            indexAux++;
+            lvModificar.ItemsSource = null;
+            lvModificar.ItemsSource = listas.MenuIngredientes[indexAux].SubProductos;
+        }
+
+        private void EnviarCantidad_Click(object sender, RoutedEventArgs e)
+        {
+            listas.MenuIngredientes[indexAux].SubProductos[indexCantidad].Cantidad += float.Parse(CantidadNueva.Text);
+            Exito0.Text = "Precios de" + listas.MenuIngredientes[indexAux].SubProductos[indexCantidad].Producto + "Actualizados Correctamente";
+            Exito0.Visibility = Visibility.Visible;
         }
     }
 }
